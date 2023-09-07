@@ -11,27 +11,34 @@ use App\Http\Requests\UpdateTaskRequest;
 
 class TaskController extends Controller
 {
-    public function index() {
+    public function index() 
+    {
         return TaskResource::collection(auth()->user()->tasks()->get());
     }
 
-    public function show(Task $task) {
+    public function show(Task $task) 
+    {
+        $this->authorize('view', $task);
+
         return TaskResource::make($task);
     }
 
-    public function store(StoreTaskRequest $request) {
+    public function store(StoreTaskRequest $request) 
+    {
         $task = $request->user()->tasks()->create($request->validated());
 
         return TaskResource::make($task);
     }
 
-    public function update(UpdateTaskRequest $request, Task $task) {
+    public function update(UpdateTaskRequest $request, Task $task) 
+    {
         $task->update($request->validated());
 
         return TaskResource::make($task);
     }
 
-    public function destroy(Task $task) {
+    public function destroy(Task $task) 
+    {
         $task->delete();
         
         return response()->noContent();
