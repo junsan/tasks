@@ -10,7 +10,12 @@ use App\Http\Requests\StoreTaskRequest;
 use App\Http\Requests\UpdateTaskRequest;
 
 class TaskController extends Controller
-{
+{   
+    public function __construct() 
+    {
+        $this->authorizeResource(Task::class);
+    }
+
     public function index() 
     {
         return TaskResource::collection(auth()->user()->tasks()->get());
@@ -18,7 +23,7 @@ class TaskController extends Controller
 
     public function show(Task $task) 
     {
-        $this->authorize('view', $task);
+        //$this->authorize('view', $task);
 
         return TaskResource::make($task);
     }
